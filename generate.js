@@ -1,10 +1,15 @@
 // add "type": "module" to package.json to allow ES6 imports
+import { config } from "dotenv";
 import { OpenAI } from 'openai';
+// import { apiKey } from './apiKey.js';
 import { writeFileSync } from 'fs';
-import { apiKey } from './apiKey.js';
+
+config();
+// Logs the API_KEY to the console
+// console.log(process.env.API_KEY);
 
 const openai = new OpenAI({
-  apiKey: apiKey,
+  apiKey: process.env.API_KEY,
 });
 
 const prompt = 'cover art for a video game compilation of popular video games';
@@ -15,7 +20,7 @@ async function generateImage() {
     const image = await openai.images.generate({
       model: "dall-e-2",  // dall-e-2 (default) or dall-e-3
       prompt,
-      n: 1, // dall-e-3 can only use n: 1, dall-e-2 can generate up to n: 10
+      n: 1, // dall-e-2 can generate up to n: 10, dall-e-3 can only use n: 1
       size: "256x256",  // dall-e-2 sizes: "256x256", "512x512", "1024x1024" || dall-e-3 sizes: "1024x1024", "1024x1792", 1792x1024"
       style: "natural", // vivid (default) or natural
       // quality: "standard",  // standard (default) or hd
